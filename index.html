@@ -1,0 +1,193 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Beautiful Sounds</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/solid.css" integrity="sha384-VGP9aw4WtGH/uPAOseYxZ+Vz/vaTb1ehm1bwx92Fm8dTrE+3boLfF1SpAtB1z7HW" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/fontawesome.css" integrity="sha384-1rquJLNOM3ijoueaaeS5m+McXPJCGdr5HcA03/VHXxcp2kX2sUrQDmFc3jR5i/C7" crossorigin="anonymous">
+	<style>
+		body{
+			margin:0;
+			padding: 0;
+		}
+		.bg1{
+			background: #2ecc71;
+		}
+		.bg2{
+			background: #3498db;
+		}
+		.bg3{
+			background: #9b59b6;
+		}
+
+		.bg4{
+			background: #e67e22;
+		}
+
+		.bg5{
+			background: #e74c3c;
+		}
+
+		.bg6{
+			background: #f1c40f;
+		}
+
+		.bg7{
+			background: #34495e;
+		}
+
+		.container{
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.sound-card{
+			position: relative;
+			width:150px;
+			height: 150px;
+			border-radius: 5px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			opacity: 0.3;
+			font-family: 'Arial';
+			margin: 10px;
+		}
+
+		.active{
+			opacity: 1;
+		}
+
+		.sound-card-description{
+			color:white;
+		}
+
+		.sound-card-icone{
+			font-size: 40px;
+    		color: white;
+    		margin-bottom: 10px;
+		}
+
+		.sound-card-toggle{
+			font-size: 20px;
+		    position: absolute;
+		    right: 10px;
+		    top: 10px;
+		    color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="sound-card bg1" data-sound="Canto de pássaros ao som da natureza.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-dove"></i>
+			</div>	
+			<div class="sound-card-description">Pássaros</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+
+		<div class="sound-card bg2" data-sound="Mar agitado.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-swimming-pool"></i>
+			</div>	
+			<div class="sound-card-description">Mar Agitado</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+
+		<div class="sound-card bg3" data-sound="Chuva na floresta.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-umbrella"></i>
+			</div>	
+			<div class="sound-card-description">Chuva na Floresta</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+
+		<div class="sound-card bg4" data-sound="Canto do grilo.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-bug"></i>
+			</div>	
+			<div class="sound-card-description">Canto do Grilo</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+
+		<div class="sound-card bg5" data-sound="Orla da praia.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-umbrella-beach"></i>
+			</div>	
+			<div class="sound-card-description">Orla da Praia</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+
+		<div class="sound-card bg6" data-sound="Pequeno riacho.mp3">
+			<div class="sound-card-toggle">
+				<i class="fas fa-play"></i>
+			</div>
+			<div class="sound-card-icone">
+				<i class="fas fa-tint"></i>
+			</div>	
+			<div class="sound-card-description">Pequeno Riacho</div>	
+			<input class="sound-card-range" type="range">
+		</div>
+	</div>
+	<script>
+		let cartoes = document.querySelectorAll('.sound-card');
+
+		cartoes.forEach((elemento)=>{
+			let nomeSom = elemento.getAttribute('data-sound');
+			let audio = new Audio(`./src/sounds/${nomeSom}`);
+
+			let elementoToggle = elemento.querySelector('.sound-card-toggle');
+			let icone = elementoToggle.querySelector('.fas');
+
+			audio.loop = true;
+			icone.onclick = ()=>{
+				toggleCartao(icone, audio, elemento);
+			}
+
+			alteraVolume(elemento, audio);
+		});
+
+
+		function toggleCartao(icone,audio,elemento){
+
+			if(audio.paused) {
+				audio.play();
+				icone.classList.remove('fa-play')
+				icone.classList.add('fa-pause')
+				elemento.classList.add('active');
+				return;
+			}
+
+			icone.classList.remove('fa-pause')
+			icone.classList.add('fa-play')
+			elemento.classList.remove('active');
+			audio.pause();
+		}
+
+		function alteraVolume(elementoCartao,audio){
+			let range = elementoCartao.querySelector('.sound-card-range');
+
+			range.addEventListener('change',()=>{
+				let volume = (range.value / 100);
+				audio.volume = volume;
+			})
+		}
+	</script>
+</body>
+</html>
